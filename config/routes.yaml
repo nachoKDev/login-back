@@ -1,11 +1,21 @@
 # yaml-language-server: $schema=../vendor/symfony/routing/Loader/schema/routing.schema.json
 
-# This file is the entry point to configure the routes of your app.
-# Methods with the #[Route] attribute are automatically imported.
-# See also https://symfony.com/doc/current/routing.html
+api_register:
+    path: /api/register
+    controller: App\Controller\AuthController::register
+    methods: [POST]
 
-# To list all registered routes, run the following command:
-#   bin/console debug:router
+api_login:
+    path: /api/login
+    controller: App\Controller\AuthController::login
+    methods: [POST]
 
-controllers:
-    resource: routing.controllers
+api_logout:
+    path: /api/logout
+    controller: App\Controller\AuthController::logout
+    methods: [POST]
+
+# Keep security logout route
+_security_logout:
+    resource: security.route_loader.logout
+    type: service

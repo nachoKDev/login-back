@@ -1,0 +1,19 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: login-back
+  description: Frontend de login/registro symfony
+  tags:
+    - symfony
+    - php
+    - auth
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+spec:
+  type: website
+  lifecycle: experimental
+  owner: nachoKDev
+  system: templates
+  dependsOn: []
+  providesApis: []
+  consumesApis: []

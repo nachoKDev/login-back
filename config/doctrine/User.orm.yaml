@@ -1,0 +1,25 @@
+App\\Entity\\User:
+  type: entity
+  table: app_user
+  repositoryClass: App\\Repository\\UserRepository
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    email:
+      type: string
+      length: 180
+      unique: true
+    roles:
+      type: json
+    password:
+      type: string
+    fullName:
+      column: full_name
+      type: string
+      length: 255
+    createdAt:
+      column: created_at
+      type: datetime_immutable

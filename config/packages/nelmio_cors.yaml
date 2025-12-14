@@ -1,0 +1,22 @@
+nelmio_cors:
+  defaults:
+    allow_credentials: true
+    allow_origin: []
+    allow_headers: []
+    allow_methods: []
+    max_age: 3600
+
+  paths:
+    '^/api/':
+      allow_origin:
+        - 'http://localhost:8081'
+      allow_headers:
+        - 'Content-Type'
+        - 'Authorization'
+      allow_methods:
+        - 'GET'
+        - 'POST'
+        - 'PUT'
+        - 'DELETE'
+        - 'OPTIONS'
+      max_age: 3600
