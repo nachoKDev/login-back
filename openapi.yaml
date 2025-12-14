@@ -1,0 +1,149 @@
+openapi: 3.0.3
+info:
+  title: Login Backend
+  version: 1.0.0
+  description: API simple de registro, login y logout para Backstage.
+servers:
+  - url: http://localhost:8080
+    description: Entorno local (docker-compose)
+paths:
+  /api/register:
+    post:
+      summary: Registrar nuevo usuario
+      tags: [auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistrationRequest'
+      responses:
+        '201':
+          description: Registro exitoso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          description: Error de validaci?n
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '409':
+          description: Usuario ya existe
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/login:
+    post:
+      summary: Iniciar sesi?n
+      tags: [auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLoginRequest'
+      responses:
+        '200':
+          description: Login correcto
+          headers:
+            Set-Cookie:
+              description: Cookie de sesi?n (PHPSESSID) emitida por Symfony.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          description: JSON inv?lido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Credenciales inv?lidas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/logout:
+    post:
+      summary: Cerrar sesi?n
+      tags: [auth]
+      responses:
+        '200':
+          description: Logout exitoso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageOnly'
+components:
+  schemas:
+    UserRegistrationRequest:
+      type: object
+      required: [email, password, fullName]
+      properties:
+        email:
+          type: string
+          format: email
+          example: user@example.com
+        password:
+          type: string
+          minLength: 8
+          example: changeme123
+        fullName:
+          type: string
+          example: Jane Doe
+    UserLoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+          example: user@example.com
+        password:
+          type: string
+          example: changeme123
+    AuthResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Login successful
+        id:
+          type: integer
+          example: 1
+        email:
+          type: string
+          format: email
+        fullName:
+          type: string
+    ValidationError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Validation failed
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Invalid credentials
+    MessageOnly:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Logged out

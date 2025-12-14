@@ -1,0 +1,8 @@
+.git
+vendor
+var
+node_modules
+.env.local
+.env.*.local
+.idea
+.DS_Store
